@@ -1,26 +1,26 @@
-# codechain-primitives-js [![npm version](https://badge.fury.io/js/codechain-primitives.svg)](https://badge.fury.io/js/codechain-primitives) [![Build Status](https://travis-ci.org/CodeChain-io/codechain-primitives-js.svg?branch=master)](https://travis-ci.org/CodeChain-io/codechain-primitives-js) [![codecov](https://codecov.io/gh/CodeChain-io/codechain-primitives-js/branch/master/graph/badge.svg)](https://codecov.io/gh/Codechain-io/codechain-primitives-js)
+# foundry-primitives-js
 
-JavaScript functions and classes for CodeChain primitives
+JavaScript functions and classes for Foundry primitives
 
 ## Installing a package
 
 ```sh
 # npm
-npm install codechain-primitives
+npm install foundry-primitives
 # yarn
-yarn add codechain-primitives
+yarn add foundry-primitives
 ```
 
 ## Getting started
 
 ```javascript
 // Using require
-var primitives = require("codechain-primitives");
+var primitives = require("foundry-primitives");
 var H256 = primitives.H256;
 var blake256 = primitives.blake256;
 
 // Using import
-import { blake256, H256 } from "codechain-primitives";
+import { blake256, H256 } from "foundry-primitives";
 ```
 
 ## Functions
@@ -46,4 +46,4 @@ import { blake256, H256 } from "codechain-primitives";
 
 ## API Documentation
 
-[https://codechain-io.github.io/codechain-primitives-js](https://codechain-io.github.io/codechain-primitives-js)
+[https://codechain-io.github.io/foundry-primitives-js](https://codechain-io.github.io/foundry-primitives-js)
