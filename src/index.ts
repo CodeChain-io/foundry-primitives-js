@@ -25,19 +25,7 @@ export {
 
 export { generatePrivateKey, getPublicFromPrivate } from "./key/key";
 
-export {
-    EcdsaSignature,
-    signEcdsa,
-    verifyEcdsa,
-    recoverEcdsa
-} from "./key/ecdsa";
-
-export {
-    SchnorrSignature,
-    signSchnorr,
-    verifySchnorr,
-    recoverSchnorr
-} from "./key/schnorr";
+export { Ed25519Signature, signEd25519, verifyEd25519 } from "./key/ed25519";
 
 export {
     toHex,

@@ -20,6 +20,15 @@ export const toHex = (buffer: Buffer): string => {
 };
 
 /**
+ * Converts hexadecimal string to Uint8Array.
+ * @param string arbritrary length of data
+ * @returns Uint8Array
+ */
+export const toArray = (hex: string): Uint8Array => {
+    return Uint8Array.from(Buffer.from(hex, "hex"));
+};
+
+/**
  * Gets account id from private key.
  * @param priv 32 byte hexadecimal string of private key
  * @returns 20 byte hexadecimal string of account id

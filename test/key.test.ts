@@ -1,24 +1,19 @@
 import {
     generatePrivateKey,
     getPublicFromPrivate,
-    recoverEcdsa,
-    recoverSchnorr,
-    SchnorrSignature,
-    signEcdsa,
-    signSchnorr,
-    verifyEcdsa,
-    verifySchnorr
+    signEd25519,
+    verifyEd25519
 } from "..";
 
 test("generatePrivateKey", () => {
     const priv = generatePrivateKey();
-    expect(/^[0-9a-fA-F]{64}$/.test(priv)).toBe(true);
+    expect(/^[0-9a-fA-F]{128}$/.test(priv)).toBe(true);
 });
 
 test("getPublicFromPrivate", () => {
     const priv = generatePrivateKey();
     const pub = getPublicFromPrivate(priv);
-    expect(/^[0-9a-fA-F]{128}$/.test(pub)).toBe(true);
+    expect(/^[0-9a-fA-F]{64}$/.test(pub)).toBe(true);
 });
 
 test("sign & verify ECDSA", () => {
@@ -26,75 +21,41 @@ test("sign & verify ECDSA", () => {
         "0000000000000000000000000000000000000000000000000000000000000000";
     const priv = generatePrivateKey();
     const pub = getPublicFromPrivate(priv);
-    const sig = signEcdsa(msg, priv);
-    expect(verifyEcdsa(msg, sig, pub)).toBe(true);
+    const sig = signEd25519(msg, priv);
+    expect(verifyEd25519(msg, sig, pub)).toBe(true);
 });
 
-test("sign & recover ECDSA", () => {
-    const msg =
-        "0000000000000000000000000000000000000000000000000000000000000000";
-    const priv = generatePrivateKey();
-    const pub = getPublicFromPrivate(priv);
-    const sig = signEcdsa(msg, priv);
-    expect(recoverEcdsa(msg, sig)).toBe(pub);
-});
-
-// Examples are generated from libsecp256k1
+// Examples are generated from Ed25519 signature in pysodium
 describe.each([
     [
         "2730417b940503dfc8dddfe5dfdbfc029b269fec9bc0170a156bcfe30f5afda8",
-        "c61e7bde9bb280bc0ea1d29dd868f34c97a93feda56d174338775a6a4fcb3cff",
-        "2a7c03d513c820c6cee1cc4a7c00d350d8ee6bb8a032615af040e0930c0d2ac8cea327ff6f044cee1499ac04e1b4b0406eacd1f606cbeec5c2535562f25f05f1"
+        "36e13e2debaa6702fd9d5b6804e9c7890735f00a588aa06b7cd832368297b2fddb688c1df2093113bfc6dc1c61984be8dec0e5fa97587ec611f4dcd04182d89a",
+        "c61d9d519fc9d158b26072b9c6f46091a04c2492121b0468200136e2f802131d50fd9548c74b7aaf412aa5d3424c9b13e6827510a6dae5670f7e3631a5913802"
     ],
     [
         "52d9ec33be855d9f27e1459dabf195266e1c4ca2bd1f44bbc7c6c0c2ebd0b280",
-        "f61dbea29a861e0ff61f209f8824a4deadec80cad4d7b6cf3672c4140d82349d",
-        "42236cd3b8e8a24d4a4db3eabf059d2f977c04d4ff6422cc5b99e9bcc913fd83f1d39993b651c420990d696ce8aac7c2bcc89a41b45dbe7241bbda50ca2be92a"
+        "2b7730eb5906b9b01aa45c243aa717acae206568ed6fed07c15ce5d7604992a2437c1f5c797544b0088d0f558db12957be6d4b2c8dd5da64472be798631c1e34",
+        "5147bfe6ef37ec7c80bbaf52a27935af5db43a9636101b00df5ce74c679e1ff2bfbcaf44b68ecceb080b9c85b779ce78ae795374b372b64d51ed90959f4d9409"
     ],
     [
         "44fd4a087cbf2a0ef6762cd7de0f3020fd71b11f13afa014741dcf3f098e1de1",
-        "7e1ac454dd8b2068d15020f16680ab22ac94ea38d0e2dc006fa2bdf9f200112b",
-        "9858a21134e15a0b04e21aaa6391bfb8e94de18497810ae24d88920e2cf45e9bd681235551493d9e3f740086e8be5ba19c763f7b27536fc75e159e2dc08763dd"
+        "aa40e530b371a336b1912e221701ce1f0166bf3e492ab7149e99206d60eab69623ea53cb47deaa10e36fcf1fa85144bfe2b5498397a040874a8c392bee622405",
+        "4eaeeff776f9894099f87880ce498b09fca4b0e7c6cee42244e801791a8388726d24fe6edcf7c4e51a97c3de6299ef7e45e7bd4f3df95243b74b52e5752b7a08"
     ],
     [
         "3d52843f74e47b24edd77fcf0b2041ba1b57984eb20a4a17144c08c9588d2a0a",
-        "0d0ee35bec4b04d8c97b23357d66ead5d1486bdfcad56949c4c69291af532276",
-        "b4c29459031b740da8a20d75a948344c908ff576bcc16e50f1d1af335c321923a6416a13c152cc1e0fbb30bd568e033f919b4e548fc79996bc7c5e1a68f5dd48"
+        "b996d633716c0c185e1b5048b2ca2f79f11e6f8f7c3a2ee7711095f00743f29297fb4dd8375d0e0403c1f72cd40a59d5077f31649a5f472427c5cf315c050d8e",
+        "50caa79ba7dcb5303e614bf2cbd6dd931545f048e17295a21861bfc1a94fa12f6365c73fdd6579b88bc81460c83a362b1b62caa06006eb356e6f5d3ceb77270e"
     ],
     [
         "99a819048cc03500e0ad3debeb9beace8e26e5960f7045a551fa5c14247b8805",
-        "353d8f4a3d139a57bdf9b1c3a836f3a380fe8ba558356cd344766c97990b923b",
-        "74cb307814a2f43ed0974dc278d6fc42f04c9d682e2df6a4a449bf628c4a3a03bbf6558b4c4a8e4148322cff3b2ce11eb96b0a9c76395054550ba307eed98573"
+        "01ed6bd345d313f35f7b6c50efe991f4a7248e5eece900f8886b60fba5a2b437851b578d9cc0b6ffb256c3f41a7f9fa56915180b03bd2228bbbf1a38a0cfce8c",
+        "70400fe11c2e10f3ae1d805c2083268afecaf3864a050f14af8d26023be194dbf66175dd621d592dbabb4f291fe460b4748ef88454b354d4516dc50a0b16b703"
     ]
-])("verify & recover Schnorr with example: %p", (msg, priv, sigStr) => {
-    const sig: SchnorrSignature = {
-        r: sigStr.substr(0, 64),
-        s: sigStr.substr(64, 64)
-    };
+])("verify Ed25519 with example: %p", (msg, priv, sigStr) => {
     const pub = getPublicFromPrivate(priv);
 
     test("verify", () => {
-        expect(verifySchnorr(msg, sig, pub)).toBe(true);
+        expect(verifyEd25519(msg, sigStr, pub)).toBe(true);
     });
-    test("recover", () => {
-        expect(recoverSchnorr(msg, sig)).toBe(pub);
-    });
-});
-
-test("sign & verify Schnorr", () => {
-    const msg =
-        "0000000000000000000000000000000000000000000000000000000000000000";
-    const priv = generatePrivateKey();
-    const pub = getPublicFromPrivate(priv);
-    const sig = signSchnorr(msg, priv);
-    expect(verifySchnorr(msg, sig, pub)).toBe(true);
-});
-
-test("sign & recover Schnorr", () => {
-    const msg =
-        "0000000000000000000000000000000000000000000000000000000000000000";
-    const priv = generatePrivateKey();
-    const pub = getPublicFromPrivate(priv);
-    const sig = signSchnorr(msg, priv);
-    expect(recoverSchnorr(msg, sig)).toBe(pub);
 });
