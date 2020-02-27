@@ -28,12 +28,13 @@ import { blake256, H256 } from "foundry-primitives";
 - blake256
 - blake256WithKey
 - ripemd160
-- signEcdsa
-- verifyEcdsa
-- recoverEcdsa
+- signEd25519
+- verifyEd25519
+- recoverEd25519
 - generatePrivateKey
 - getPublicFromPrivate
 - toHex
+- toArray
 - getAccountIdFromPrivate
 - getAccountIdFromPublic
 
