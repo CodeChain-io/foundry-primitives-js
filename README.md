@@ -30,7 +30,6 @@ import { blake256, H256 } from "foundry-primitives";
 - ripemd160
 - signEd25519
 - verifyEd25519
-- recoverEd25519
 - generatePrivateKey
 - getPublicFromPrivate
 - toHex
