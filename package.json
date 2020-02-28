@@ -26,7 +26,8 @@
     "url": "git+https://github.com/CodeChain-io/foundry-primitives-js.git"
   },
   "keywords": [
-    "CodeChain"
+    "CodeChain",
+    "Foundry"
   ],
   "author": "CodeChain Team <hi@codechain.io>",
   "license": "ISC",
