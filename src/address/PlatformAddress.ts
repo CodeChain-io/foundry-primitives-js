@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import { blake160 } from "../hash";
 import { toHex } from "../utility";
 import { H160 } from "../value/H160";
-import { H512 } from "../value/H512";
+import { H256, H256Value } from "../value/H256";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 
@@ -20,16 +20,16 @@ export type PlatformAddressValue = PlatformAddress | string;
  */
 export class PlatformAddress {
     public static fromPublic(
-        publicKey: H512 | string,
+        publicKey: H256Value,
         options: { networkId: string; version?: number }
     ): PlatformAddress {
-        if (!H512.check(publicKey)) {
+        if (!H256.check(publicKey)) {
             throw Error(
                 `Invalid public key for creating PlatformAddress: ${publicKey}`
             );
         }
         return PlatformAddress.fromAccountId(
-            getAccountIdFromPublic(H512.ensure(publicKey).value),
+            getAccountIdFromPublic(H256.ensure(publicKey).value),
             options
         );
     }
