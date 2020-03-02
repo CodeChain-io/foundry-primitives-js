@@ -96,3 +96,35 @@ describe("fromString", () => {
         }
     });
 });
+
+describe("fromPublic", () => {
+    const pubkey =
+        "d7a6d266837c1c591383b90d835068b9ed58dd3bcebd6e285911f58e40ce413c";
+    const accountId = "837cfc9c54fd1cd83970e0493d54d3a579aba06c";
+
+    test("mainnet", () => {
+        const address = PlatformAddress.fromPublic(pubkey, { networkId: "cc" });
+        expect(address.toString()).toEqual(
+            "cccqxphelyu2n73ekpewrsyj0256wjhn2aqdsdp3qs3"
+        );
+        expect(address.accountId).toEqual(new H160(accountId));
+    });
+
+    test("testnet", () => {
+        const address = PlatformAddress.fromPublic(pubkey, { networkId: "tc" });
+        expect(address.toString()).toEqual(
+            "tccqxphelyu2n73ekpewrsyj0256wjhn2aqds9xrrrg"
+        );
+        expect(address.accountId).toEqual(new H160(accountId));
+    });
+
+    test("Invalid public key", done => {
+        try {
+            PlatformAddress.fromPublic(pubkey.slice(1), { networkId: "cc" });
+            done.fail();
+        } catch (e) {
+            expect(e.toString()).toContain("Invalid public key");
+            done();
+        }
+    });
+});
