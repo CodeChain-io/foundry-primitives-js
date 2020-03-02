@@ -1,4 +1,3 @@
-export { AssetAddress, AssetAddressValue } from "./address/AssetAddress";
 export {
     PlatformAddress,
     PlatformAddressValue
