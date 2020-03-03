@@ -29,6 +29,7 @@ export { Ed25519Signature, signEd25519, verifyEd25519 } from "./key/ed25519";
 
 export {
     toHex,
+    toArray,
     getAccountIdFromPrivate,
     getAccountIdFromPublic,
     toLocaleString
