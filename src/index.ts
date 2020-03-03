@@ -24,7 +24,7 @@ export {
 } from "./hash";
 
 export { generatePrivateKey, getPublicFromPrivate } from "./key/key";
-
+export { exchange } from "./key/keyExchange";
 export { Ed25519Signature, signEd25519, verifyEd25519 } from "./key/ed25519";
 
 export {
