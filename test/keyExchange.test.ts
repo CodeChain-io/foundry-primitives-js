@@ -1,4 +1,4 @@
-import { exchange } from "..";
+import { exchange, x25519GetPublicFromPrivate } from "..";
 
 describe("exchange", () => {
     // The testing oracle is generated from "libsodium-wrappers"
@@ -21,4 +21,14 @@ describe("exchange", () => {
     test("Bob-side", () => {
         expect(exchange(AliceX25519Pk, BobX25519Sk)).toEqual(shared_secret);
     });
+});
+
+test("x25519GetPublicFromPrivate", () => {
+    // The testing oracle is generated from "libsodium-wrappers"
+    const x25519Sk =
+        "49023b9f7f997d3c8f1763f762a2f79d3d0fc5d4204ee25bf05ef57ca190d91b";
+    const x25519Pk =
+        "687d59b5c23877b6e822e3459d5a9a45e801a6a3752cdada2dfa7c76eaadb36f";
+
+    expect(x25519GetPublicFromPrivate(x25519Sk)).toEqual(x25519Pk);
 });
