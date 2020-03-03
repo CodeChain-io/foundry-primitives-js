@@ -8,27 +8,27 @@ import { H256, H256Value } from "../value/H256";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 
-export type PlatformAddressValue = PlatformAddress | string;
+export type AddressValue = Address | string;
 
 /**
  * The bech32 form of account id. The human readable part(HRP) is used to
- * represent the network. For platform address, the HRP is "ccc" for mainnet or
+ * represent the network. For address, the HRP is "ccc" for mainnet or
  * "tcc" for testnet.
  *
- * Refer to the spec for the details about PlatformAddress.
+ * Refer to the spec for the details about Address.
  * https://github.com/CodeChain-io/codechain/blob/master/spec/CodeChain-Address.md
  */
-export class PlatformAddress {
+export class Address {
     public static fromPublic(
         publicKey: H256Value,
         options: { networkId: string; version?: number }
-    ): PlatformAddress {
+    ): Address {
         if (!H256.check(publicKey)) {
             throw Error(
-                `Invalid public key for creating PlatformAddress: ${publicKey}`
+                `Invalid public key for creating Address: ${publicKey}`
             );
         }
-        return PlatformAddress.fromAccountId(
+        return Address.fromAccountId(
             getAccountIdFromPublic(H256.ensure(publicKey).value),
             options
         );
@@ -42,18 +42,14 @@ export class PlatformAddress {
 
         if (!H160.check(accountId)) {
             throw Error(
-                `Invalid accountId for creating PlatformAddress: "${accountId}"`
+                `Invalid accountId for creating Address: "${accountId}"`
             );
         }
         if (version !== 1) {
-            throw Error(
-                `Unsupported version for PlatformAddress: "${version}"`
-            );
+            throw Error(`Unsupported version for Address: "${version}"`);
         }
         if (typeof networkId !== "string" || networkId.length !== 2) {
-            throw Error(
-                `Unsupported networkId for PlatformAddress: "${networkId}"`
-            );
+            throw Error(`Unsupported networkId for Address: "${networkId}"`);
         }
 
         const words = toWords(
@@ -63,7 +59,7 @@ export class PlatformAddress {
                 "hex"
             )
         );
-        return new PlatformAddress(
+        return new Address(
             H160.ensure(accountId),
             encode(networkId + "c", words)
         );
@@ -71,11 +67,9 @@ export class PlatformAddress {
 
     public static fromString(address: string) {
         if (typeof address !== "string") {
-            throw Error(
-                `Expected PlatformAddress string but found: "${address}"`
-            );
+            throw Error(`Expected Address string but found: "${address}"`);
         } else if (address.charAt(2) !== "c") {
-            throw Error(`Unknown prefix for PlatformAddress: ${address}`);
+            throw Error(`Unknown prefix for Address: ${address}`);
         }
 
         const { words } = decode(address, address.substr(0, 3));
@@ -83,35 +77,31 @@ export class PlatformAddress {
         const version = bytes[0];
 
         if (version !== 1) {
-            throw Error(`Unsupported version for PlatformAddress: ${version}`);
+            throw Error(`Unsupported version for Address: ${version}`);
         }
 
         const accountId = toHex(Buffer.from(bytes.slice(1)));
-        return new PlatformAddress(new H160(accountId), address);
+        return new Address(new H160(accountId), address);
     }
 
     public static check(address: any): boolean {
-        return address instanceof PlatformAddress
-            ? true
-            : PlatformAddress.checkString(address);
+        return address instanceof Address ? true : Address.checkString(address);
     }
 
-    public static ensure(address: PlatformAddressValue): PlatformAddress {
-        if (address instanceof PlatformAddress) {
+    public static ensure(address: AddressValue): Address {
+        if (address instanceof Address) {
             return address;
         } else if (typeof address === "string") {
-            return PlatformAddress.fromString(address);
+            return Address.fromString(address);
         } else {
             throw Error(
-                `Expected either PlatformAddress or string but found ${address}`
+                `Expected either Address or string but found ${address}`
             );
         }
     }
 
-    public static ensureAccount(
-        address: PlatformAddress | H160 | string
-    ): H160 {
-        if (address instanceof PlatformAddress) {
+    public static ensureAccount(address: Address | H160 | string): H160 {
+        if (address instanceof Address) {
             // FIXME: verify network id
             return address.getAccountId();
         } else if (address instanceof H160) {
@@ -119,7 +109,7 @@ export class PlatformAddress {
         } else if (address.match(`^(0x)?[a-fA-F0-9]{40}$`)) {
             return new H160(address);
         } else {
-            return PlatformAddress.fromString(address).getAccountId();
+            return Address.fromString(address).getAccountId();
         }
     }
 

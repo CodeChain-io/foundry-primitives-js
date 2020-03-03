@@ -1,7 +1,4 @@
-export {
-    PlatformAddress,
-    PlatformAddressValue
-} from "./address/PlatformAddress";
+export { Address, AddressValue } from "./address/address";
 
 export { H128, H128Value } from "./value/H128";
 export { H160, H160Value } from "./value/H160";
