@@ -1,4 +1,4 @@
-# foundry-primitives-js
+# foundry-primitives-js [![Build Status](https://travis-ci.org/CodeChain-io/foundry-primitives-js.svg?branch=master)](https://travis-ci.org/CodeChain-io/foundry-primitives-js)
 
 JavaScript functions and classes for Foundry primitives
 
